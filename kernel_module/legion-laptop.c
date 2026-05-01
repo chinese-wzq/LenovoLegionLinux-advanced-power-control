@@ -487,6 +487,10 @@ static const struct model_config model_v0 = {
 	.acpi_paths = {
 		[ACPI_PATH_READ_RAPIDCHARGE] = "\\_SB.PCI0.LPC0.EC0.VPC0.GBMD",
 		[ACPI_PATH_WRITE_RAPIDCHARGE] = "\\_SB.PCI0.LPC0.EC0.VPC0.SBMC"
+	},
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 	}
 };
 
@@ -506,7 +510,10 @@ static const struct model_config model_j2cn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE00D400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_9vcn = {
@@ -525,7 +532,10 @@ static const struct model_config model_9vcn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFE00D400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_v2022 = {
@@ -544,7 +554,10 @@ static const struct model_config model_v2022 = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE00D400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_4gcn = {
@@ -563,7 +576,10 @@ static const struct model_config model_4gcn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE00D400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_bvcn = {
@@ -582,7 +598,10 @@ static const struct model_config model_bvcn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFC7E0800,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_bhcn = {
@@ -601,7 +620,10 @@ static const struct model_config model_bhcn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFF00D400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_kwcn = {
@@ -620,7 +642,10 @@ static const struct model_config model_kwcn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE0B0400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_g8cn = {
@@ -639,7 +664,10 @@ static const struct model_config model_g8cn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE0B0400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_m0cn = {
@@ -658,7 +686,10 @@ static const struct model_config model_m0cn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFE0B0400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_m1cn = {
@@ -677,7 +708,10 @@ static const struct model_config model_m1cn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFE0B0400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_m2cn = {
@@ -696,7 +730,10 @@ static const struct model_config model_m2cn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFE0B0400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_m6cn = {
@@ -715,7 +752,10 @@ static const struct model_config model_m6cn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFE0B0400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_k1cn = {
@@ -734,7 +774,10 @@ static const struct model_config model_k1cn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE0B0400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_nscn = {
@@ -757,7 +800,10 @@ static const struct model_config model_nscn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFE0B0400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_lpcn = {
@@ -823,7 +869,10 @@ static const struct model_config model_kfcn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE00D400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_hacn = {
@@ -842,7 +891,10 @@ static const struct model_config model_hacn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE00D400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_k9cn = {
@@ -861,7 +913,10 @@ static const struct model_config model_k9cn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE00D400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_eucn = {
@@ -880,7 +935,10 @@ static const struct model_config model_eucn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE00D400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_fccn = {
@@ -899,7 +957,10 @@ static const struct model_config model_fccn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE00D400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_h3cn = {
@@ -923,7 +984,10 @@ static const struct model_config model_h3cn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFE0B0800,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_e9cn = {
@@ -947,7 +1011,10 @@ static const struct model_config model_e9cn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFC7E0800,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_8jcn = {
@@ -966,7 +1033,10 @@ static const struct model_config model_8jcn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFE00D400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_jncn = {
@@ -985,7 +1055,10 @@ static const struct model_config model_jncn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFC7E0800,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 // Yoga Model!
@@ -1005,7 +1078,10 @@ static const struct model_config model_j1cn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE0B0400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 // Yoga Model!
@@ -1025,7 +1101,10 @@ static const struct model_config model_dmcn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = true,
 	.ramio_physical_start = 0xFE700D00,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 // Yoga Model!
@@ -1045,7 +1124,10 @@ static const struct model_config model_khcn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFE0B0400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 // LOQ Model
@@ -1070,7 +1152,10 @@ static const struct model_config model_lzcn = {
 	.acpi_paths = {
 		[ACPI_PATH_STA] = "\\_SB.PC00.LPCB.EC0.VPC0._STA",
 		[ACPI_PATH_CFG] = "\\_SB.PC00.LPCB.EC0.VPC0._CFG"
-	}
+	},
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 // LOQ Model 2024
@@ -1091,7 +1176,10 @@ static const struct model_config model_necn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI3,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFE0B0F00,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 // LOQ 15AHP9
@@ -1116,7 +1204,10 @@ static const struct model_config model_nzcn = {
 	.acpi_paths = {
 		[ACPI_PATH_STA] = "\\_SB.PC00.LPCB.EC0.VPC0._STA",
 		[ACPI_PATH_CFG] = "\\_SB.PC00.LPCB.EC0.VPC0._CFG"
-	}
+	},
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 // Legion Slim 5 16AHP9 (2024) - Model 83DH
@@ -1137,7 +1228,10 @@ static const struct model_config model_nrcn = {
 	.access_method_fanfullspeed = ACCESS_METHOD_WMI,
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFE0B0400,
-	.ramio_size = 0x600
+	.ramio_size = 0x600,
+	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI,
+	.access_method_gpu_oc = ACCESS_METHOD_WMI,
 };
 
 static const struct model_config model_r3cn = {
@@ -4751,7 +4845,6 @@ static ssize_t cpu_shortterm_powerlimit_show(struct device *dev,
 			dev, buf, OtherMethodFeature_CPU_SHORT_TERM_POWER_LIMIT,
 			1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return show_simple_wmi_attribute_from_buffer(
 			dev, attr, buf, WMI_GUID_LENOVO_CPU_METHOD, 0,
@@ -4771,7 +4864,6 @@ static ssize_t cpu_shortterm_powerlimit_store(struct device *dev,
 			dev, buf, count,
 			OtherMethodFeature_CPU_SHORT_TERM_POWER_LIMIT, 1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return store_simple_wmi_attribute(
 			dev, attr, buf, count, WMI_GUID_LENOVO_CPU_METHOD, 0,
@@ -4793,7 +4885,6 @@ static ssize_t cpu_longterm_powerlimit_show(struct device *dev,
 			dev, buf, OtherMethodFeature_CPU_LONG_TERM_POWER_LIMIT,
 			1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return show_simple_wmi_attribute_from_buffer(
 			dev, attr, buf, WMI_GUID_LENOVO_CPU_METHOD, 0,
@@ -4813,7 +4904,6 @@ static ssize_t cpu_longterm_powerlimit_store(struct device *dev,
 			dev, buf, count,
 			OtherMethodFeature_CPU_LONG_TERM_POWER_LIMIT, 1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return store_simple_wmi_attribute(
 			dev, attr, buf, count, WMI_GUID_LENOVO_CPU_METHOD, 0,
@@ -4845,7 +4935,6 @@ static ssize_t cpu_peak_powerlimit_show(struct device *dev,
 		return show_wmi_other_feature_attribute(
 			dev, buf, OtherMethodFeature_CPU_PEAK_POWER_LIMIT, 1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return show_simple_wmi_attribute(dev, attr, buf,
 						 WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -4866,7 +4955,6 @@ static ssize_t cpu_peak_powerlimit_store(struct device *dev,
 			dev, buf, count, OtherMethodFeature_CPU_PEAK_POWER_LIMIT,
 			1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return store_simple_wmi_attribute(dev, attr, buf, count,
 						  WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -4887,7 +4975,6 @@ static ssize_t cpu_apu_sppt_powerlimit_show(struct device *dev,
 	case ACCESS_METHOD_WMI3:
 		return -EOPNOTSUPP;
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return show_simple_wmi_attribute(
 			dev, attr, buf, WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -4905,7 +4992,6 @@ static ssize_t cpu_apu_sppt_powerlimit_store(struct device *dev,
 	case ACCESS_METHOD_WMI3:
 		return -EOPNOTSUPP;
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return store_simple_wmi_attribute(
 			dev, attr, buf, count, WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -4927,7 +5013,6 @@ static ssize_t cpu_cross_loading_powerlimit_show(struct device *dev,
 			dev, buf, OtherMethodFeature_CPU_CROSS_LOAD_POWER_LIMIT,
 			1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return show_simple_wmi_attribute(
 			dev, attr, buf, WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -4947,7 +5032,6 @@ static ssize_t cpu_cross_loading_powerlimit_store(struct device *dev,
 			dev, buf, count,
 			OtherMethodFeature_CPU_CROSS_LOAD_POWER_LIMIT, 1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return store_simple_wmi_attribute(
 			dev, attr, buf, count, WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -4968,7 +5052,6 @@ static ssize_t gpu_oc_show(struct device *dev, struct device_attribute *attr,
 			dev, attr, buf, LEGION_WMI_GAMEZONE_GUID, 0,
 			WMI_METHOD_ID_GET_GPU_OC_STATUS_WMAA, false, 1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return show_simple_wmi_attribute(dev, attr, buf,
 						 WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -4988,7 +5071,6 @@ static ssize_t gpu_oc_store(struct device *dev, struct device_attribute *attr,
 			dev, attr, buf, count, LEGION_WMI_GAMEZONE_GUID, 0,
 			WMI_METHOD_ID_SET_GPU_OC_STATUS_WMAA, false, 1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return store_simple_wmi_attribute(dev, attr, buf, count,
 						  WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -5010,7 +5092,6 @@ static ssize_t gpu_ppab_powerlimit_show(struct device *dev,
 		return show_wmi_other_feature_attribute(
 			dev, buf, OtherMethodFeature_GPU_POWER_BOOST, 1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return show_simple_wmi_attribute_from_buffer(
 			dev, attr, buf, WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -5029,7 +5110,6 @@ static ssize_t gpu_ppab_powerlimit_store(struct device *dev,
 		return store_wmi_other_feature_attribute(
 			dev, buf, count, OtherMethodFeature_GPU_POWER_BOOST, 1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return store_simple_wmi_attribute(dev, attr, buf, count,
 						  WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -5052,7 +5132,6 @@ static ssize_t gpu_ctgp_powerlimit_show(struct device *dev,
 							OtherMethodFeature_GPU_cTGP,
 							1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return show_simple_wmi_attribute_from_buffer(
 			dev, attr, buf, WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -5071,7 +5150,6 @@ static ssize_t gpu_ctgp_powerlimit_store(struct device *dev,
 		return store_wmi_other_feature_attribute(
 			dev, buf, count, OtherMethodFeature_GPU_cTGP, 1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return store_simple_wmi_attribute(dev, attr, buf, count,
 						  WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -5092,7 +5170,6 @@ static ssize_t gpu_ctgp2_powerlimit_show(struct device *dev,
 	case ACCESS_METHOD_WMI3:
 		return -EOPNOTSUPP;
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return show_simple_wmi_attribute_from_buffer(
 			dev, attr, buf, WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -5124,7 +5201,6 @@ static ssize_t gpu_temperature_limit_show(struct device *dev,
 		return show_wmi_other_feature_attribute(
 			dev, buf, OtherMethodFeature_GPU_TEMPERATURE_LIMIT, 1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return show_simple_wmi_attribute(
 			dev, attr, buf, WMI_GUID_LENOVO_GPU_METHOD, 0,
@@ -5144,7 +5220,6 @@ static ssize_t gpu_temperature_limit_store(struct device *dev,
 			dev, buf, count, OtherMethodFeature_GPU_TEMPERATURE_LIMIT,
 			1);
 	case ACCESS_METHOD_WMI:
-	case ACCESS_METHOD_NO_ACCESS:
 	default:
 		return store_simple_wmi_attribute(
 			dev, attr, buf, count, WMI_GUID_LENOVO_GPU_METHOD, 0,
