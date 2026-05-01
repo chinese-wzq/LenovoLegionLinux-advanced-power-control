@@ -23,7 +23,13 @@ log = logging.getLogger(__name__)
 
 DEFAULT_ENCODING = "utf8"
 DEFAULT_CONFIG_DIR = "/etc/legion_linux"
-LEGION_SYS_BASEPATH = '/sys/module/legion_laptop/drivers/platform:legion/PNP0C09:00'
+_LEGION_DRIVER_DIR = '/sys/module/legion_laptop/drivers/platform:legion'
+_LEGION_DEVICE_IDS = ['VPC2004:00', 'PNP0C09:00']
+LEGION_SYS_BASEPATH = next(
+    (os.path.join(_LEGION_DRIVER_DIR, d) for d in _LEGION_DEVICE_IDS
+     if os.path.isdir(os.path.join(_LEGION_DRIVER_DIR, d))),
+    os.path.join(_LEGION_DRIVER_DIR, 'PNP0C09:00')
+)
 IDEAPAD_SYS_BASEPATH = '/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00'
 LBLDVC_FILE = "/sys/firmware/efi/efivars/LBLDVC-871455d1-5576-4fb8-9865-af0824463c9f"
 LBLDESP_FILE = "/sys/firmware/efi/efivars/LBLDESP-871455d0-5576-4fb8-9865-af0824463b9e"
@@ -597,6 +603,11 @@ class CPUCrossLoadingPowerLimit(IntFileFeature):
                                       "cpu_cross_loading_powerlimit"), 0, 100, 1)
 
 
+class CPUTemperatureLimit(IntFileFeature):
+    def __init__(self):
+        super().__init__(os.path.join(LEGION_SYS_BASEPATH, "cpu_temperature_limit"), 0, 100, 1)
+
+
 class GPUBoostClock(IntFileFeature):
     def __init__(self):
         super().__init__(os.path.join(LEGION_SYS_BASEPATH, "gpu_boost_clock"), 0, 10000, 1)
@@ -609,12 +620,22 @@ class GPUCTGPPowerLimit(IntFileFeature):
 
 class GPUPPABPowerLimit(IntFileFeature):
     def __init__(self):
-        super().__init__(os.path.join(LEGION_SYS_BASEPATH, "gpu_ppab_powerlimit"), 0, 200, 1)
+        super().__init__(os.path.join(LEGION_SYS_BASEPATH, "gpu_ppab_powerlimit"), 0, 80, 1)
 
 
 class GPUTemperatureLimit(IntFileFeature):
     def __init__(self):
-        super().__init__(os.path.join(LEGION_SYS_BASEPATH, "gpu_temperature_limit"), 0, 120, 1)
+        super().__init__(os.path.join(LEGION_SYS_BASEPATH, "gpu_temperature_limit"), 0, 95, 1)
+
+
+class GPUTotalProcessorPowerTargetOnAC(IntFileFeature):
+    def __init__(self):
+        super().__init__(os.path.join(LEGION_SYS_BASEPATH, "gpu_total_processor_power_target_on_ac"), 0, 100, 1)
+
+
+class GPUToCPUDynamicBoost(IntFileFeature):
+    def __init__(self):
+        super().__init__(os.path.join(LEGION_SYS_BASEPATH, "gpu_to_cpu_dynamic_boost"), 0, 80, 1)
 
 
 class YLogoLight(BoolFileFeature):
@@ -1429,12 +1450,15 @@ class LegionModelFacade:
         self.cpu_peak_power_limit = CPUPeakPowerLimit()
         self.cpu_default_power_limit = CPUDefaultPowerLimit()
         self.cpu_cross_loading_power_limit = CPUCrossLoadingPowerLimit()
+        self.cpu_temperature_limit = CPUTemperatureLimit()
         self.cpu_apu_sppt_power_limit = CPUAPUSPPTPowerLimit()
         self.gpu_overclock = GPUOverclock()
         self.gpu_boost_clock = GPUBoostClock()
         self.gpu_ctgp_power_limit = GPUCTGPPowerLimit()
         self.gpu_ppab_power_limit = GPUPPABPowerLimit()
         self.gpu_temperature_limit = GPUTemperatureLimit()
+        self.gpu_total_processor_power_target_on_ac = GPUTotalProcessorPowerTargetOnAC()
+        self.gpu_to_cpu_dynamic_boost = GPUToCPUDynamicBoost()
 
         # light
         self.ylogo_light = YLogoLight()
