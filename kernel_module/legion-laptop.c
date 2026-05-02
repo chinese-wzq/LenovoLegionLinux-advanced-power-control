@@ -6722,9 +6722,12 @@ static void legion_light_exit(struct legion_private *priv,
 /* Platform driver                */
 /* ============================   */
 
+static const struct acpi_device_id legion_device_ids[];
+
 static int legion_add(struct platform_device *pdev)
 {
 	struct legion_private *priv;
+	const struct acpi_device_id *acpi_match;
 	const struct dmi_system_id *dmi_sys;
 	int err;
 	u16 ec_read_id;
@@ -6743,6 +6746,13 @@ static int legion_add(struct platform_device *pdev)
 		dmi_get_system_info(DMI_SYS_VENDOR),
 		dmi_get_system_info(DMI_PRODUCT_NAME),
 		dmi_get_system_info(DMI_BIOS_VERSION));
+
+	acpi_match = acpi_match_device(legion_device_ids, &pdev->dev);
+	if (acpi_match && !strcmp(acpi_match->id, "PNP0C09") &&
+	    acpi_dev_present("VPC2004", NULL, -1)) {
+		dev_info(&pdev->dev, "VPC2004 present, skipping PNP0C09 fallback\n");
+		return -ENODEV;
+	}
 
 	// TODO: allocate?
 	priv = &_priv;
