@@ -1021,12 +1021,14 @@ class FanCurveTab(QWidget):
         super().__init__()
         self.controller = controller
         self.entry_edits = []
+        self.speed_unit = 'rpm'
         self.init_ui()
 
         self.controller.view_fancurve = self
 
     def set_fancurve(self, fancurve: FanCurve, has_minifancurve: bool, enabled: bool):
         self.minfancurve_check.setDisabled(not has_minifancurve)
+        self._set_speed_labels(fancurve)
         for i, entry in enumerate(fancurve.entries):
             self.entry_edits[i].set(entry)
             self.entry_edits[i].set_disabled(not enabled)
@@ -1037,13 +1039,20 @@ class FanCurveTab(QWidget):
             self.entry_edits[i].set(entry)
         self.minfancurve_check.setChecked(fancurve.enable_minifancurve)
 
+    def _set_speed_labels(self, fancurve: FanCurve):
+        self.speed_unit = fancurve.speed_unit or 'rpm'
+        unit_label = "%" if self.speed_unit == 'percent' else "rpm"
+        self.fan_speed1_label.setText(f"Fan 1 Speed [{unit_label}]")
+        self.fan_speed2_label.setText(f"Fan 2 Speed [{unit_label}]")
+
     def get_fancurve(self) -> FanCurve:
         entries = []
         for i in range(10):
             entry = self.entry_edits[i].get()
             entries.append(entry)
         return FanCurve(name='unknown', entries=entries,
-                        enable_minifancurve=self.minfancurve_check.isChecked())
+                        enable_minifancurve=self.minfancurve_check.isChecked(),
+                        speed_unit=self.speed_unit)
 
     def create_fancurve_entry_view(self, layout, point_id):
         self.entry_edits.append(FanCurveEntryView(point_id, layout))
