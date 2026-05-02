@@ -769,14 +769,27 @@ class FanCurveIO(Feature):
     minifancurve = "minifancurve"
     fan1_max = "fan1_max"
     fan2_max = "fan2_max"
+    fan_speed_unit_path = "fan_speed_unit"
+
+    FAN_SPEED_UNIT_PERCENT = 1
+    FAN_SPEED_UNIT_PWM = 2
+    FAN_SPEED_UNIT_RPM_HUNDRED = 3
 
     encoding = DEFAULT_ENCODING
 
     def __init__(self, expect_hwmon=True):
         super().__init__()
         self.hwmon_path = self._find_hwmon_dir()
+        self._fan_speed_unit = None
         if (not self.hwmon_path) and expect_hwmon:
             raise FileNotFoundError("hwmon dir not found")
+
+    def _get_speed_unit(self):
+        if self._fan_speed_unit is None:
+            file_path = self.hwmon_path + self.fan_speed_unit_path
+            self._fan_speed_unit = self._read_file_or(file_path,
+                                                       self.FAN_SPEED_UNIT_RPM_HUNDRED)
+        return self._fan_speed_unit
 
     def exists(self):
         if self.hwmon_path is not None:
@@ -837,10 +850,18 @@ class FanCurveIO(Feature):
         self._write_file(file_path, value)
 
     def set_fan_1_speed_rpm(self, point_id, value):
-        return self.set_fan_1_speed_pwm(point_id, round(value/self.get_fan_1_max_rpm()*255.0))
+        if self._get_speed_unit() == self.FAN_SPEED_UNIT_PERCENT:
+            pwm = round(value * 255 / 100)
+        else:
+            pwm = round(value / self.get_fan_1_max_rpm() * 255.0)
+        return self.set_fan_1_speed_pwm(point_id, pwm)
 
     def set_fan_2_speed_rpm(self, point_id, value):
-        return self.set_fan_2_speed_pwm(point_id, round(value/self.get_fan_2_max_rpm()*255.0))
+        if self._get_speed_unit() == self.FAN_SPEED_UNIT_PERCENT:
+            pwm = round(value * 255 / 100)
+        else:
+            pwm = round(value / self.get_fan_2_max_rpm() * 255.0)
+        return self.set_fan_2_speed_pwm(point_id, pwm)
 
     def set_lower_cpu_temperature(self, point_id, value):
         point_id = self._validate_point_id(point_id)
@@ -893,10 +914,16 @@ class FanCurveIO(Feature):
         return self._read_file(file_path)
 
     def get_fan_1_speed_rpm(self, point_id):
-        return round(self.get_fan_1_speed_pwm(point_id)/255.0*self.get_fan_1_max_rpm(), ndigits=2)
+        pwm = self.get_fan_1_speed_pwm(point_id)
+        if self._get_speed_unit() == self.FAN_SPEED_UNIT_PERCENT:
+            return round(pwm * 100 / 255)
+        return round(pwm / 255.0 * self.get_fan_1_max_rpm(), ndigits=2)
 
     def get_fan_2_speed_rpm(self, point_id):
-        return round(self.get_fan_2_speed_pwm(point_id)/255.0*self.get_fan_2_max_rpm(), ndigits=2)
+        pwm = self.get_fan_2_speed_pwm(point_id)
+        if self._get_speed_unit() == self.FAN_SPEED_UNIT_PERCENT:
+            return round(pwm * 100 / 255)
+        return round(pwm / 255.0 * self.get_fan_2_max_rpm(), ndigits=2)
 
     def get_lower_cpu_temperature(self, point_id):
         point_id = self._validate_point_id(point_id)
