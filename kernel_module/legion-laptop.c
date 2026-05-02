@@ -3167,11 +3167,11 @@ static ssize_t wmi_write_fancurve_custom(const struct model_config *model,
 
 	memset(buffer, 0, sizeof(buffer));
 	if (model->fancurve_wmi_10level) {
+		// EC expects 0-10 level values; scale from internal percentage (0-100)
+		int cap = 10;
 		// FSTM/FSID/FSTL must be set for ACPI method to accept the request
 		buffer[0x00] = 0x01; // FSTM = fan table mode
 		buffer[0x02] = 10;   // FSTL = number of points (as DWord, offset 0x02-0x05)
-		// EC expects 0-10 level values; scale from internal percentage (0-100)
-		int cap = 10;
 		buffer[0x06] = min_t(u8, (fancurve->points[0].speed1 + 5) / 10, cap);
 		buffer[0x08] = min_t(u8, (fancurve->points[1].speed1 + 5) / 10, cap);
 		buffer[0x0A] = min_t(u8, (fancurve->points[2].speed1 + 5) / 10, cap);
@@ -5291,12 +5291,12 @@ static umode_t legion_sysfs_is_visible(struct kobject *kobj,
 	(void)n;
 
 	if (attr == &dev_attr_cpu_apu_sppt_powerlimit.attr) {
-		if (priv && priv->conf->access_method_cpu_powerlimit == ACCESS_METHOD_WMI3)
+		if (!priv || priv->conf->access_method_cpu_powerlimit == ACCESS_METHOD_WMI3)
 			return 0;
 	}
 
 	if (attr == &dev_attr_gpu_ctgp2_powerlimit.attr) {
-		if (priv && priv->conf->access_method_gpu_powerlimit == ACCESS_METHOD_WMI3)
+		if (!priv || priv->conf->access_method_gpu_powerlimit == ACCESS_METHOD_WMI3)
 			return 0;
 	}
 
@@ -5797,10 +5797,12 @@ static ssize_t fan_max_show(struct device *dev,
 
 	// Percentage-based fan curves (WMI3) don't use RPM max
 	if (priv->conf->access_method_fancurve == ACCESS_METHOD_WMI3)
-		return sprintf(buf, "0\n");
+		return sprintf(buf, "%d\n", MAX_RPM);
 
+	mutex_lock(&priv->fancurve_mutex);
 	err = wmi_exec_int(WMI_GUID_LENOVO_FAN_METHOD, 0,
 			   WMI_METHOD_ID_FAN_GET_MAXSPEED, NULL, &res);
+	mutex_unlock(&priv->fancurve_mutex);
 	if (!err && res > 0)
 		return sprintf(buf, "%d\n", (int)res);
 
@@ -6329,10 +6331,13 @@ static ssize_t fan_speed_unit_show(struct device *dev,
 {
 	struct legion_private *priv = dev_get_drvdata(dev);
 	struct fancurve fancurve;
+	int err;
 
 	mutex_lock(&priv->fancurve_mutex);
-	read_fancurve(priv, &fancurve);
+	err = read_fancurve(priv, &fancurve);
 	mutex_unlock(&priv->fancurve_mutex);
+	if (err)
+		return err;
 
 	return sprintf(buf, "%d\n", fancurve.fan_speed_unit);
 }
