@@ -823,6 +823,13 @@ static const struct model_config model_lpcn = {
 	.acpi_check_dev = false,
 	.ramio_physical_start = 0xFE0B0400,
 	.ramio_size = 0x600,
+	.acpi_paths = {
+		[ACPI_PATH_STA] = "\\_SB.PCI0.LPC0.EC0.VPC0._STA",
+		[ACPI_PATH_CFG] = "\\_SB.PCI0.LPC0.EC0.VPC0._CFG",
+		[ACPI_PATH_READ_RAPIDCHARGE] = "\\_SB.PCI0.LPC0.EC0.VPC0.GBMD",
+		[ACPI_PATH_WRITE_RAPIDCHARGE] = "\\_SB.PCI0.LPC0.EC0.VPC0.SBMC",
+	},
+	.has_extreme_powermode = true,
 	.access_method_cpu_powerlimit = ACCESS_METHOD_WMI3,
 	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI3,
 	.access_method_gpu_oc = ACCESS_METHOD_WMI2,
