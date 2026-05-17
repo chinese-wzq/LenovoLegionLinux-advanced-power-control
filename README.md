@@ -34,6 +34,26 @@
 
 **This project is not affiliated with Lenovo in any way**
 
+## Fork notes
+
+This branch is a downstream fork of upstream [johnfanv2/LenovoLegionLinux](https://github.com/johnfanv2/LenovoLegionLinux). It originally attempted to land upstream through [pull request #427](https://github.com/johnfanv2/LenovoLegionLinux/pull/427), but after the maintainer stated in [this comment](https://github.com/johnfanv2/LenovoLegionLinux/pull/427#issuecomment-4412472641) that the branch used AI, review and merge were declined. It now exists as an independent fork, with the hope that future contributors can help bring the changes back upstream.
+
+Compared with upstream, the main differences are:
+
+- CPU Long Term Power Limit [W]
+- CPU Short Term Power Limit [W]
+- CPU Peak Power Limit [W]
+- CPU Cross Loading Power Limit [W]
+- CPU Temperature Limit [“C]
+- GPU cCTGP Power Limit [W]
+- GPU PPAB Power Limit [W]
+- GPU Temperature Limit [“C]
+- Total Processor Power Target on AC [W]
+- GPU to CPU Dynamic Boost [W]
+- GPU Overclock
+
+If your model also supports the advanced power-control features above, please open an issue so it can be adapted as well.
+
 <!-- # If you have a 2022 or 2023 model, please help testing the new features [here](https://github.com/johnfanv2/LenovoLegionLinux/issues/46).
 
 # If you have a light in the lid (Y-logo) or at the IO-ports (all Legion 7), please help testing controlling it  [here](https://github.com/johnfanv2/LenovoLegionLinux/issues/54). -->
