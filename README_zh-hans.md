@@ -34,6 +34,26 @@
 
 **本项目与联想(Lenovo)官方无任何关联**  
 
+## Fork 说明
+
+本分支是上游 [johnfanv2/LenovoLegionLinux](https://github.com/johnfanv2/LenovoLegionLinux) 的下游 fork。它原本尝试通过 [PR #427](https://github.com/johnfanv2/LenovoLegionLinux/pull/427) 合入主线，但维护者在 [该评论](https://github.com/johnfanv2/LenovoLegionLinux/pull/427#issuecomment-4412472641) 中表示该分支使用了 AI，因此拒绝 review 和合并。现在它作为一个独立分支存在，并希望未来有人能帮助把这些改动重新合并回主线。
+
+与上游相比，这个分支的主要区别是对 LPCN 机型高级电源控制的支持与修复，包括：
+
+- CPU Long Term Power Limit [W]
+- CPU Short Term Power Limit [W]
+- CPU Peak Power Limit [W]
+- CPU Cross Loading Power Limit [W]
+- CPU Temperature Limit [“C]
+- GPU cCTGP Power Limit [W]
+- GPU PPAB Power Limit [W]
+- GPU Temperature Limit [“C]
+- Total Processor Power Target on AC [W]
+- GPU to CPU Dynamic Boost [W]
+- GPU Overclock
+
+如果您的机型也支持以上高级电源控制功能，欢迎提交 issue 以便后续适配。  
+
 <!-- # 如果您拥有2022或2023款机型，请协助测试新功能[点击此处](https://github.com/johnfanv2/LenovoLegionLinux/issues/46)  
 
 # 如果您的设备带有顶盖Y字logo灯或IO接口指示灯（所有Legion 7机型），请协助测试灯光控制[点击此处](https://github.com/johnfanv2/LenovoLegionLinux/issues/54) -->  
