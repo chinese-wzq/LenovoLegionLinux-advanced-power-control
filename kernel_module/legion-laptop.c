@@ -261,6 +261,8 @@ struct model_config {
 	enum access_method access_method_gpu_oc;
 	// Whether advanced LPCN62WW-only power features are present
 	bool has_advanced_power_features;
+	// WMI fan curve uses 10-level scale (0-10) instead of percentage (0-100)
+	bool fancurve_wmi_10level;
 };
 
 /* =================================== */
@@ -834,6 +836,7 @@ static const struct model_config model_lpcn = {
 	.access_method_gpu_powerlimit = ACCESS_METHOD_WMI3,
 	.access_method_gpu_oc = ACCESS_METHOD_WMI2,
 	.has_advanced_power_features = true,
+	.fancurve_wmi_10level = true,
 };
 
 static const struct model_config model_kfcn = {
@@ -3298,19 +3301,20 @@ static ssize_t wmi_read_fancurve_custom(const struct model_config *model,
 	if (!err) {
 		struct WMIFanTableRead *fantable =
 			(struct WMIFanTableRead *)&buffer[0];
+		int scale = model->fancurve_wmi_10level ? 10 : 1;
 		fancurve->current_point_i = 0;
 		fancurve->size = 10;
 		fancurve->fan_speed_unit = FAN_SPEED_UNIT_PERCENT;
-		fancurve->points[0].speed1 = fantable->FSS0;
-		fancurve->points[1].speed1 = fantable->FSS1;
-		fancurve->points[2].speed1 = fantable->FSS2;
-		fancurve->points[3].speed1 = fantable->FSS3;
-		fancurve->points[4].speed1 = fantable->FSS4;
-		fancurve->points[5].speed1 = fantable->FSS5;
-		fancurve->points[6].speed1 = fantable->FSS6;
-		fancurve->points[7].speed1 = fantable->FSS7;
-		fancurve->points[8].speed1 = fantable->FSS8;
-		fancurve->points[9].speed1 = fantable->FSS9;
+		fancurve->points[0].speed1 = min_t(u8, fantable->FSS0 * scale, 255);
+		fancurve->points[1].speed1 = min_t(u8, fantable->FSS1 * scale, 255);
+		fancurve->points[2].speed1 = min_t(u8, fantable->FSS2 * scale, 255);
+		fancurve->points[3].speed1 = min_t(u8, fantable->FSS3 * scale, 255);
+		fancurve->points[4].speed1 = min_t(u8, fantable->FSS4 * scale, 255);
+		fancurve->points[5].speed1 = min_t(u8, fantable->FSS5 * scale, 255);
+		fancurve->points[6].speed1 = min_t(u8, fantable->FSS6 * scale, 255);
+		fancurve->points[7].speed1 = min_t(u8, fantable->FSS7 * scale, 255);
+		fancurve->points[8].speed1 = min_t(u8, fantable->FSS8 * scale, 255);
+		fancurve->points[9].speed1 = min_t(u8, fantable->FSS9 * scale, 255);
 		//fancurve->points[10].speed1 = fantable->FSSA;
 	}
 	return err;
@@ -3339,16 +3343,31 @@ static ssize_t wmi_write_fancurve_custom(const struct model_config *model,
 	// CreateByteField (Arg2, 0x18, FSS9)
 
 	memset(buffer, 0, sizeof(buffer));
-	buffer[0x06] = fancurve->points[0].speed1;
-	buffer[0x08] = fancurve->points[1].speed1;
-	buffer[0x0A] = fancurve->points[2].speed1;
-	buffer[0x0C] = fancurve->points[3].speed1;
-	buffer[0x0E] = fancurve->points[4].speed1;
-	buffer[0x10] = fancurve->points[5].speed1;
-	buffer[0x12] = fancurve->points[6].speed1;
-	buffer[0x14] = fancurve->points[7].speed1;
-	buffer[0x16] = fancurve->points[8].speed1;
-	buffer[0x18] = fancurve->points[9].speed1;
+	if (model->fancurve_wmi_10level) {
+		buffer[0x00] = 0x01;
+		buffer[0x02] = 10;
+		buffer[0x06] = min_t(u8, (fancurve->points[0].speed1 + 5) / 10, 10);
+		buffer[0x08] = min_t(u8, (fancurve->points[1].speed1 + 5) / 10, 10);
+		buffer[0x0A] = min_t(u8, (fancurve->points[2].speed1 + 5) / 10, 10);
+		buffer[0x0C] = min_t(u8, (fancurve->points[3].speed1 + 5) / 10, 10);
+		buffer[0x0E] = min_t(u8, (fancurve->points[4].speed1 + 5) / 10, 10);
+		buffer[0x10] = min_t(u8, (fancurve->points[5].speed1 + 5) / 10, 10);
+		buffer[0x12] = min_t(u8, (fancurve->points[6].speed1 + 5) / 10, 10);
+		buffer[0x14] = min_t(u8, (fancurve->points[7].speed1 + 5) / 10, 10);
+		buffer[0x16] = min_t(u8, (fancurve->points[8].speed1 + 5) / 10, 10);
+		buffer[0x18] = min_t(u8, (fancurve->points[9].speed1 + 5) / 10, 10);
+	} else {
+		buffer[0x06] = fancurve->points[0].speed1;
+		buffer[0x08] = fancurve->points[1].speed1;
+		buffer[0x0A] = fancurve->points[2].speed1;
+		buffer[0x0C] = fancurve->points[3].speed1;
+		buffer[0x0E] = fancurve->points[4].speed1;
+		buffer[0x10] = fancurve->points[5].speed1;
+		buffer[0x12] = fancurve->points[6].speed1;
+		buffer[0x14] = fancurve->points[7].speed1;
+		buffer[0x16] = fancurve->points[8].speed1;
+		buffer[0x18] = fancurve->points[9].speed1;
+	}
 
 	print_hex_dump(KERN_DEBUG, "legion_laptop fan table wmi write buffer",
 		       DUMP_PREFIX_ADDRESS, 16, 1, buffer, sizeof(buffer),
@@ -6087,7 +6106,7 @@ static struct attribute *sensor_hwmon_attributes[] = {
 static ssize_t fan_max_show(struct device *dev,
 			    struct device_attribute *devattr, char *buf)
 {
-	return sprintf(buf, "%d\n", MAX_RPM);
+		return sprintf(buf, "%d\n", MAX_RPM);
 }
 
 static ssize_t autopoint_show(struct device *dev,
@@ -6606,6 +6625,23 @@ error:
 
 static SENSOR_DEVICE_ATTR_RW(minifancurve, minifancurve, 0);
 
+static ssize_t fan_speed_unit_show(struct device *dev,
+				   struct device_attribute *devattr, char *buf)
+{
+	struct legion_private *priv = dev_get_drvdata(dev);
+	struct fancurve fancurve;
+	int err;
+
+	mutex_lock(&priv->fancurve_mutex);
+	err = read_fancurve(priv, &fancurve);
+	mutex_unlock(&priv->fancurve_mutex);
+	if (err)
+		return err;
+
+	return sprintf(buf, "%d\n", fancurve.fan_speed_unit);
+}
+static DEVICE_ATTR_RO(fan_speed_unit);
+
 static struct attribute *fancurve_hwmon_attributes[] = {
 	&sensor_dev_attr_fan1_max.dev_attr.attr,
 	&sensor_dev_attr_fan2_max.dev_attr.attr,
@@ -6713,6 +6749,7 @@ static struct attribute *fancurve_hwmon_attributes[] = {
 	&sensor_dev_attr_auto_points_size.dev_attr.attr,
 	&sensor_dev_attr_minifancurve.dev_attr.attr,
 	&sensor_dev_attr_fancurve_defaults_powermode.dev_attr.attr,
+	&dev_attr_fan_speed_unit.attr,
 	NULL
 };
 
