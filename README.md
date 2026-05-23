@@ -38,7 +38,7 @@
 
 This branch is a downstream fork of upstream [johnfanv2/LenovoLegionLinux](https://github.com/johnfanv2/LenovoLegionLinux). It originally attempted to land upstream through [pull request #427](https://github.com/johnfanv2/LenovoLegionLinux/pull/427), but after the maintainer stated in [this comment](https://github.com/johnfanv2/LenovoLegionLinux/pull/427#issuecomment-4412472641) that the branch used AI, review and merge were declined. It now exists as an independent fork, with the hope that future contributors can help bring the changes back upstream.
 
-Compared with upstream, the main differences are:
+Compared with upstream, the main differences in this branch are support and fixes for advanced power-control features on LPCN models, including:
 
 - CPU Long Term Power Limit [W]
 - CPU Short Term Power Limit [W]
