@@ -38,21 +38,23 @@
 
 本分支是上游 [johnfanv2/LenovoLegionLinux](https://github.com/johnfanv2/LenovoLegionLinux) 的下游 fork。它原本尝试通过 [PR #427](https://github.com/johnfanv2/LenovoLegionLinux/pull/427) 合入主线，但维护者在 [该评论](https://github.com/johnfanv2/LenovoLegionLinux/pull/427#issuecomment-4412472641) 中表示该分支使用了 AI，因此拒绝 review 和合并。现在它作为一个独立分支存在，并希望未来有人能帮助把这些改动重新合并回主线。
 
-与上游相比，这个分支的主要区别是对 LPCN 机型高级电源控制的支持与修复，包括：
+与上游相比，本分支的主要区别在于对 LPCN 机型（包括 R9000P 2023 和 Slim 5 16APH8 2023）高级电源控制的支持与修复，具体包括：
 
 - CPU Long Term Power Limit [W]
 - CPU Short Term Power Limit [W]
 - CPU Peak Power Limit [W]
 - CPU Cross Loading Power Limit [W]
-- CPU Temperature Limit [“C]
+- CPU Temperature Limit [°C]
 - GPU cCTGP Power Limit [W]
 - GPU PPAB Power Limit [W]
-- GPU Temperature Limit [“C]
+- GPU Temperature Limit [°C]
 - Total Processor Power Target on AC [W]
 - GPU to CPU Dynamic Boost [W]
 - GPU Overclock
 
-如果您的机型也支持以上高级电源控制功能，欢迎提交 issue 以便后续适配。  
+若您的机型也支持上述高级电源控制功能，欢迎提交 issue 以便后续适配。
+
+> **注意**：若系统未启用 `nvidia-powerd` 服务，对显卡功耗的修改很可能不会生效，表现为功耗锁定在 80 W（可通过 `nvidia-smi` 查看功耗限制），且不会随负载增加而提升。不同发行版的启用方式可能不同，可尝试 `systemctl enable --now nvidia-powerd`，若无效请自行搜索或咨询 AI。
 
 <!-- # 如果您拥有2022或2023款机型，请协助测试新功能[点击此处](https://github.com/johnfanv2/LenovoLegionLinux/issues/46)  
 
