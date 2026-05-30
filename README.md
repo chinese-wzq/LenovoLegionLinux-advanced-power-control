@@ -38,7 +38,7 @@
 
 This branch is a downstream fork of upstream [johnfanv2/LenovoLegionLinux](https://github.com/johnfanv2/LenovoLegionLinux). It originally attempted to land upstream through [pull request #427](https://github.com/johnfanv2/LenovoLegionLinux/pull/427), but after the maintainer stated in [this comment](https://github.com/johnfanv2/LenovoLegionLinux/pull/427#issuecomment-4412472641) that the branch used AI, review and merge were declined. It now exists as an independent fork, with the hope that future contributors can help bring the changes back upstream.
 
-Compared with upstream, this branch adds support and fixes for advanced power control on LPCN models (including the R9000P 2023 and Slim 5 16APH8 2023):
+Compared with upstream, this branch adds support and fixes for advanced power control on LPCN and M3CN models (including the R9000P 2023 and Slim 5 16APH8 2023):
 
 - CPU Long Term Power Limit [W]
 - CPU Short Term Power Limit [W]
