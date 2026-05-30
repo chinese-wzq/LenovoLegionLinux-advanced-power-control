@@ -38,21 +38,23 @@
 
 This branch is a downstream fork of upstream [johnfanv2/LenovoLegionLinux](https://github.com/johnfanv2/LenovoLegionLinux). It originally attempted to land upstream through [pull request #427](https://github.com/johnfanv2/LenovoLegionLinux/pull/427), but after the maintainer stated in [this comment](https://github.com/johnfanv2/LenovoLegionLinux/pull/427#issuecomment-4412472641) that the branch used AI, review and merge were declined. It now exists as an independent fork, with the hope that future contributors can help bring the changes back upstream.
 
-Compared with upstream, the main differences in this branch are support and fixes for advanced power-control features on LPCN models, including:
+Compared with upstream, this branch adds support and fixes for advanced power control on LPCN models (including the R9000P 2023 and Slim 5 16APH8 2023):
 
 - CPU Long Term Power Limit [W]
 - CPU Short Term Power Limit [W]
 - CPU Peak Power Limit [W]
 - CPU Cross Loading Power Limit [W]
-- CPU Temperature Limit [“C]
+- CPU Temperature Limit [°C]
 - GPU cCTGP Power Limit [W]
 - GPU PPAB Power Limit [W]
-- GPU Temperature Limit [“C]
+- GPU Temperature Limit [°C]
 - Total Processor Power Target on AC [W]
 - GPU to CPU Dynamic Boost [W]
 - GPU Overclock
 
 If your model also supports the advanced power-control features above, please open an issue so it can be adapted as well.
+
+> **Note**: GPU power limit modifications will likely not take effect if the `nvidia-powerd` service is not running. Symptoms include the power limit being locked at 80 W (check with `nvidia-smi`) and not increasing under load. The method to enable the service varies by distribution; try `systemctl enable --now nvidia-powerd`, or search for your distribution's specific instructions. If neither works, consult your favorite search engine or AI.
 
 <!-- # If you have a 2022 or 2023 model, please help testing the new features [here](https://github.com/johnfanv2/LenovoLegionLinux/issues/46).
 
