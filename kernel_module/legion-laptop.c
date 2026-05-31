@@ -5488,6 +5488,89 @@ static ssize_t fan_maxspeed_store(struct device *dev,
 
 static DEVICE_ATTR_RW(fan_maxspeed);
 
+static void legion_reapply_power_attr(struct device *dev,
+				      struct device_attribute *attr,
+				      ssize_t (*show)(struct device *,
+						    struct device_attribute *,
+						    char *),
+				      ssize_t (*store)(struct device *,
+						     struct device_attribute *,
+						     const char *, size_t))
+{
+	char *buf;
+	ssize_t len;
+	
+	// We have to do this because otherwise it would trigger sysfs buffer invalid warning and cause the write to fail.
+	buf = (char *)__get_free_page(GFP_KERNEL);
+	if (!buf)
+		return;
+
+	len = show(dev, attr, buf);
+	if (len <= 0)
+		goto out_free;
+	if (len >= PAGE_SIZE)
+		len = PAGE_SIZE - 1;
+	buf[len] = '\0';
+	store(dev, attr, buf, len);
+
+out_free:
+	free_page((unsigned long)buf);
+}
+
+static void legion_apply_custom_power_settings(struct legion_private *priv)
+{
+	// Reapply custom power settings. On some models, the custom settings won't take effect 
+	// the first time you switch to custom mode after booting, even if they are already set,
+	// unless you read the current value and write it back once.
+	struct device *dev;
+
+	if (!priv || !priv->conf->has_advanced_power_features)
+		return;
+
+	dev = &priv->platform_device->dev;
+
+	legion_reapply_power_attr(dev, &dev_attr_cpu_longterm_powerlimit,
+				  cpu_longterm_powerlimit_show,
+				  cpu_longterm_powerlimit_store);
+	legion_reapply_power_attr(dev, &dev_attr_cpu_shortterm_powerlimit,
+				  cpu_shortterm_powerlimit_show,
+				  cpu_shortterm_powerlimit_store);
+	legion_reapply_power_attr(dev, &dev_attr_cpu_peak_powerlimit,
+				  cpu_peak_powerlimit_show,
+				  cpu_peak_powerlimit_store);
+	legion_reapply_power_attr(dev, &dev_attr_cpu_cross_loading_powerlimit,
+				  cpu_cross_loading_powerlimit_show,
+				  cpu_cross_loading_powerlimit_store);
+	legion_reapply_power_attr(dev, &dev_attr_cpu_temperature_limit,
+				  cpu_temperature_limit_show,
+				  cpu_temperature_limit_store);
+
+	if (priv->conf->access_method_cpu_powerlimit != ACCESS_METHOD_WMI3)
+	// We don't know whether a model that supports advanced power features is guaranteed
+	// not to support the APU SPPT power limit, so we decide to play it safe.
+		legion_reapply_power_attr(dev,
+					  &dev_attr_cpu_apu_sppt_powerlimit,
+					  cpu_apu_sppt_powerlimit_show,
+					  cpu_apu_sppt_powerlimit_store);
+
+	legion_reapply_power_attr(dev, &dev_attr_gpu_ctgp_powerlimit,
+				  gpu_ctgp_powerlimit_show,
+				  gpu_ctgp_powerlimit_store);
+	legion_reapply_power_attr(dev, &dev_attr_gpu_ppab_powerlimit,
+				  gpu_ppab_powerlimit_show,
+				  gpu_ppab_powerlimit_store);
+	legion_reapply_power_attr(dev, &dev_attr_gpu_temperature_limit,
+				  gpu_temperature_limit_show,
+				  gpu_temperature_limit_store);
+	legion_reapply_power_attr(dev,
+				  &dev_attr_gpu_total_processor_power_target_on_ac,
+				  gpu_total_processor_power_target_on_ac_show,
+				  gpu_total_processor_power_target_on_ac_store);
+	legion_reapply_power_attr(dev, &dev_attr_gpu_to_cpu_dynamic_boost,
+				  gpu_to_cpu_dynamic_boost_show,
+				  gpu_to_cpu_dynamic_boost_store);
+}
+
 static ssize_t powermode_show(struct device *dev, struct device_attribute *attr,
 			      char *buf)
 {
@@ -5534,6 +5617,8 @@ static ssize_t powermode_store(struct device *dev,
 #else
 	legion_platform_profile_notify();
 #endif
+	if (powermode == LEGION_WMI_POWERMODE_CUSTOM)
+		legion_apply_custom_power_settings(priv);
 
 	return count;
 }
@@ -5856,6 +5941,7 @@ static int legion_platform_profile_set(struct platform_profile_handler *pprof,
 #endif
 {
 	int powermode;
+	int err;
 	struct legion_private *priv;
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 14, 0)
@@ -5886,7 +5972,16 @@ static int legion_platform_profile_set(struct platform_profile_handler *pprof,
 		return -EOPNOTSUPP;
 	}
 
-	return write_powermode(priv, powermode);
+	err = write_powermode(priv, powermode);
+	if (err)
+		return err;
+
+	if (profile == PLATFORM_PROFILE_CUSTOM) {
+		msleep(500);
+		legion_apply_custom_power_settings(priv);
+	}
+
+	return 0;
 }
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 14, 0)
