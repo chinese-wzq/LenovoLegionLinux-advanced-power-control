@@ -38,7 +38,7 @@
 
 本分支是上游 [johnfanv2/LenovoLegionLinux](https://github.com/johnfanv2/LenovoLegionLinux) 的下游 fork。它原本尝试通过 [PR #427](https://github.com/johnfanv2/LenovoLegionLinux/pull/427) 合入主线，但维护者在 [该评论](https://github.com/johnfanv2/LenovoLegionLinux/pull/427#issuecomment-4412472641) 中表示该分支使用了 AI，因此拒绝 review 和合并。现在它作为一个独立分支存在，并希望未来有人能帮助把这些改动重新合并回主线。
 
-与上游相比，本分支的主要区别在于对 LPCN 机型（包括 R9000P 2023 和 Slim 5 16APH8 2023）高级电源控制的支持与修复，具体包括：
+与上游相比，本分支的主要区别在于对 LPCN 和 M3CN 机型（包括 R9000P 2023 和 Slim 5 16APH8 2023）高级电源控制的支持与修复，具体包括：
 
 - CPU Long Term Power Limit [W]
 - CPU Short Term Power Limit [W]
